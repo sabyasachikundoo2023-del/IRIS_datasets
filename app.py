@@ -36,17 +36,15 @@ st.write(f"**Sepal:** {input_df[0][0]}cm x {input_df[0][1]}cm | **Petal:** {inpu
 # 4. Prediction Logic
 if st.button("Predict Species"):
     prediction = model.predict(input_df)
-    prediction_proba = model.predict_proba(input_df)
     
-    # Map the numeric output to the actual name
-    species = ['Setosa', 'Versicolor', 'Virginica']
-    result = species[prediction[0]]
-    
+    # We remove the 'species' list entirely to avoid the TypeError
     st.write("---")
     st.subheader("Prediction Result")
-    st.success(f"The predicted species is: **Iris {result}**")
     
-    # Show confidence level (HR loves seeing 'Probability')
-    st.write(f"**Confidence Level:** {np.max(prediction_proba) * 100:.2f}%")
-
-st.info("Built by a CSE Student | Machine Learning Deployment Demo")
+    # This line works whether prediction[0] is an integer or a string
+    st.success(f"The predicted species is: **Iris {prediction[0]}**")
+    
+    # Confidence level display
+    prediction_proba = model.predict_proba(input_df)
+    confidence = np.max(prediction_proba) * 100
+    st.write(f"**Confidence Level:** {confidence:.2f}%")
